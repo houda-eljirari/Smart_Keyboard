@@ -1,10 +1,12 @@
-Trigram (k=0.1) top-3 misses (context -> true word | suggestions):
-  'the' -> 'foxes' | ['doctors', 'teachers', 'girls']
-  'the foxes eat the' -> 'cakes' | ['bread', 'apples', 'soup']
-  'the' -> 'boys' | ['doctors', 'teachers', 'girls']
-  'the boys' -> 'sell' | ['watch', 'buy', 'bring']
-  'the' -> 'young' | ['doctors', 'teachers', 'girls']
-  'the young dogs play in the' -> 'kitchen' | ['park', 'garden', 'school']
+Trigram top-3 misses (context -> true word | suggestions):
+  'new police station to open' -> 'on' | ['</s>', 'new', 'in']
+  'former new zealand prime minister john' -> 'key' | ['howard', '0', '000']
+  'cyclone nelson brings' -> 'rain' | ['0', '000', '09']
+  'calder hwy rock blasting to' -> 'disrupt' | ['miss', 'face', 'be']
+  'man will not leave hawaiian home despite lava danger' -> '</s>' | ['0', '000', '09']
+  'cfmeu fined for threatening armageddon at rah site' -> '</s>' | ['prompt', '0', '000']
+  'older drivers less likely to pass' -> 'test' | ['coronavirus', 'sa', '0']
+  'coerced evidence possible in hicks trial' -> 'ruddock' | ['</s>', '0', '000']
 
-Test positions whose trigram context never appears in training: 9
-  examples: ['brave foxes', 'brave girls', 'happy bread', 'hungry key', 'lazy soup']
+Test positions whose trigram context never appears in training: 24180
+  examples: ['questions alice', 'police gather', 'monitor teelah', 'hiv patient', 'petition free', 'labors council', 'sneak', 'expect poor']
