@@ -1,1 +1,104 @@
-# Smart_Keyboard
+# Smart Keyboard : clavier intelligent basé sur les modèles N-gram
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://smartkeyboard-5adqetjt2ljeppjkunaugz.streamlit.app/)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-app-red)
+![NLP](https://img.shields.io/badge/NLP-N--gram-green)
+
+Application web de **prédiction du mot suivant** (et de génération de texte) construite à partir d'un modèle de langage **N-gramme avec lissage de Laplace**. Projet réalisé dans le cadre de l'**Atelier 2 : « Utiliser les ML N-gram et HMM pour générer un texte »** du module NLP (Semestre 3, ENSET Mohammedia, A.U 2026/2027).
+
+**Démo en ligne : [smartkeyboard.streamlit.app](https://smartkeyboard-5adqetjt2ljeppjkunaugz.streamlit.app/)**
+
+---
+
+## Fonctionnalités
+
+- **Suggestion du mot suivant** : à chaque mot saisi, l'application propose les mots les plus probables avec leur probabilité.
+- **Génération automatique de texte** à partir du modèle entraîné (tirage aléatoire pondéré par les probabilités).
+- **Paramètres réglables** : ordre du modèle `n` (bigramme, trigramme) et paramètre de lissage `alpha`.
+- **Interface web simple** développée avec Streamlit, accessible sans installation.
+
+---
+
+## Comment ça marche ?
+
+### 1. Nettoyage et tokenisation
+Le texte est passé en minuscules, la ponctuation (dont l'apostrophe) est remplacée par des espaces, puis découpé en tokens. Exemple : `l'intelligence` → `['l', 'intelligence']`.
+
+### 2. Comptage des n-grammes
+On ajoute les symboles `<s>` (début de phrase) et `</s>` (fin de phrase), puis on compte chaque n-gramme et chaque contexte du corpus.
+
+### 3. Probabilité avec lissage de Laplace
+
+$$\mathbb{P}_{Laplace}(w \mid h) = \frac{C(h\,w) + \alpha}{C(h) + \alpha V}$$
+
+où `h` est le contexte, `C(·)` un comptage, `V` la taille du vocabulaire (en incluant `</s>`) et `alpha` le paramètre de lissage. Le lissage évite les probabilités nulles pour les n-grammes jamais observés.
+
+### 4. Prédiction et génération
+- **Prédiction** : on calcule `P(w | contexte)` pour tous les mots du vocabulaire et on retient les `top-k`.
+- **Génération** : on part du contexte `<s>`, on tire le mot suivant avec `random.choices` selon les probabilités, et on s'arrête quand `</s>` est tiré ou qu'on atteint le nombre maximal de mots.
+
+### 5. Évaluation
+Le modèle est évalué par la **perplexité** : plus elle est faible, mieux le modèle prédit la phrase.
+
+$$PP(w_{1:N}) = \exp\left(-\frac{1}{N}\sum_{k=1}^{N}\log \mathbb{P}(w_k \mid w_{k-n+1:k-1})\right)$$
+
+---
+
+## Installation et exécution en local
+
+### Prérequis
+- Python 3.10 ou plus
+- `pip`
+
+### Étapes
+
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/houda-eljirari/Smart_Keyboard.git
+cd Smart_Keyboard
+
+# 2. Créer et activer un environnement virtuel
+python -m venv .venv
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+# Linux / macOS
+source .venv/bin/activate
+
+# 3. Installer les dépendances
+pip install -r requirements.txt
+
+# 4. Lancer l'application
+streamlit run app.py
+```
+
+L'application s'ouvre sur `http://localhost:8501`.
+
+---
+
+## Dépendances principales
+
+| Bibliothèque | Utilisation |
+|---|---|
+| `streamlit` | Interface web |
+| `pandas` | Matrices de probabilités |
+| `nltk` | Corpus Treebank (partie HMM) |
+| `numpy` | Calculs numériques |
+
+Les modules `re`, `math`, `random` et `collections` font partie de la bibliothèque standard de Python.
+
+---
+
+## Limites
+
+- Le corpus d'entraînement est très petit : les prédictions restent peu fiables.
+- Un lissage trop fort (alpha = 1) rend la génération presque aléatoire sur un petit corpus.
+- Le problème des n-grammes inconnus s'aggrave quand `n` augmente (trigramme).
+- Pistes d'amélioration : corpus plus grand, *backoff* / interpolation / Kneser-Ney, modèles neuronaux.
+
+---
+
+
+## 📄 Licence
+
+Projet académique. Libre d'utilisation à des fins pédagogiques.
