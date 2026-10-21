@@ -20,23 +20,6 @@ Application web de **prédiction du mot suivant** (et de génération de texte) 
 
 ---
 
-## Comment ça marche ?
-
-### 1. Nettoyage et tokenisation
-Le texte est passé en minuscules, la ponctuation (dont l'apostrophe) est remplacée par des espaces, puis découpé en tokens. Exemple : `l'intelligence` → `['l', 'intelligence']`.
-
-### 2. Comptage des n-grammes
-On ajoute les symboles `<s>` (début de phrase) et `</s>` (fin de phrase), puis on compte chaque n-gramme et chaque contexte du corpus.
-
-### 3. Prédiction et génération
-- **Prédiction** : on calcule `P(w | contexte)` pour tous les mots du vocabulaire et on retient les `top-k`.
-- **Génération** : on part du contexte `<s>`, on tire le mot suivant avec `random.choices` selon les probabilités, et on s'arrête quand `</s>` est tiré ou qu'on atteint le nombre maximal de mots.
-
-### 4. Évaluation
-Le modèle est évalué par la **perplexité** : plus elle est faible, mieux le modèle prédit la phrase.
-
----
-
 ## Installation et exécution en local
 
 ### Prérequis
