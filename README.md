@@ -28,20 +28,12 @@ Le texte est passé en minuscules, la ponctuation (dont l'apostrophe) est rempla
 ### 2. Comptage des n-grammes
 On ajoute les symboles `<s>` (début de phrase) et `</s>` (fin de phrase), puis on compte chaque n-gramme et chaque contexte du corpus.
 
-### 3. Probabilité avec lissage de Laplace
-
-$$\mathbb{P}_{Laplace}(w \mid h) = \frac{C(h\,w) + \alpha}{C(h) + \alpha V}$$
-
-où `h` est le contexte, `C(·)` un comptage, `V` la taille du vocabulaire (en incluant `</s>`) et `alpha` le paramètre de lissage. Le lissage évite les probabilités nulles pour les n-grammes jamais observés.
-
-### 4. Prédiction et génération
+### 3. Prédiction et génération
 - **Prédiction** : on calcule `P(w | contexte)` pour tous les mots du vocabulaire et on retient les `top-k`.
 - **Génération** : on part du contexte `<s>`, on tire le mot suivant avec `random.choices` selon les probabilités, et on s'arrête quand `</s>` est tiré ou qu'on atteint le nombre maximal de mots.
 
-### 5. Évaluation
+### 4. Évaluation
 Le modèle est évalué par la **perplexité** : plus elle est faible, mieux le modèle prédit la phrase.
-
-$$PP(w_{1:N}) = \exp\left(-\frac{1}{N}\sum_{k=1}^{N}\log \mathbb{P}(w_k \mid w_{k-n+1:k-1})\right)$$
 
 ---
 
@@ -95,10 +87,3 @@ Les modules `re`, `math`, `random` et `collections` font partie de la bibliothè
 - Un lissage trop fort (alpha = 1) rend la génération presque aléatoire sur un petit corpus.
 - Le problème des n-grammes inconnus s'aggrave quand `n` augmente (trigramme).
 - Pistes d'amélioration : corpus plus grand, *backoff* / interpolation / Kneser-Ney, modèles neuronaux.
-
----
-
-
-## 📄 Licence
-
-Projet académique. Libre d'utilisation à des fins pédagogiques.
